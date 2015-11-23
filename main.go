@@ -6,7 +6,7 @@ import (
 
 	"github.com/codegangsta/cli"
 	"github.com/codegangsta/envy/lib"
-	"github.com/codegangsta/gin/lib"
+	"github.com/leyra/gin/lib"
 
 	"log"
 	"os"
@@ -58,6 +58,11 @@ func main() {
 			Name:  "godep,g",
 			Usage: "use godep when building",
 		},
+		cli.StringFlag{
+			Name:  "customBuild,c",
+			Value: "",
+			Usage: "specify and use a custom go build command",
+		},
 	}
 	app.Commands = []cli.Command{
 		{
@@ -93,7 +98,13 @@ func MainAction(c *cli.Context) {
 		logger.Fatal(err)
 	}
 
-	builder := gin.NewBuilder(c.GlobalString("path"), c.GlobalString("bin"), c.GlobalBool("godep"))
+	builder := gin.NewBuilder(
+		c.GlobalString("path"),
+		c.GlobalString("bin"),
+		c.GlobalBool("godep"),
+		c.GlobalString("customBuild"),
+	)
+
 	runner := gin.NewRunner(filepath.Join(wd, builder.Binary()), c.Args()...)
 	runner.SetWriter(os.Stdout)
 	proxy := gin.NewProxy(builder, runner)

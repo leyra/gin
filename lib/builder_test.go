@@ -1,7 +1,7 @@
 package gin_test
 
 import (
-	"github.com/codegangsta/gin/lib"
+	"github.com/leyra/gin/lib"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -15,7 +15,7 @@ func Test_Builder_Build_Success(t *testing.T) {
 		bin += ".exe"
 	}
 
-	builder := gin.NewBuilder(wd, bin, false)
+	builder := gin.NewBuilder(wd, bin, false, "")
 	err := builder.Build()
 	expect(t, err, nil)
 
